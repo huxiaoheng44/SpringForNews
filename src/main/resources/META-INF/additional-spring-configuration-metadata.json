@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "active",
+      "type": "java.lang.String",
+      "description": "Description for active."
+  }
+] }

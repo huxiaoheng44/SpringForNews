@@ -6,27 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "t_type")
-public class Type {
+@Table(name = "t_tag")
+public class Tag {
+
     @Id  //主键标识
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "分类名称不能为空")
+    @NotBlank(message = "标签名称不能为空")
     private String name;
 
-    @OneToMany(mappedBy = "type")
-    private List<News>  news = new ArrayList<>();
+    @ManyToMany(mappedBy = "tags")
+    private List<News> newsList = new ArrayList<>();
 
-    public Type(){
-    }
-
-    public List<News> getNews() {
-        return news;
-    }
-
-    public void setNews(List<News> news) {
-        this.news = news;
-    }
+    public Tag(){}
 
     public Long getId() {
         return id;
@@ -44,9 +36,19 @@ public class Type {
         this.name = name;
     }
 
+
+
+    public List<News> getNewsList() {
+        return newsList;
+    }
+
+    public void setNewsList(List<News> newsList) {
+        this.newsList = newsList;
+    }
+
     @Override
     public String toString() {
-        return "Type{" +
+        return "Tag{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

@@ -7,6 +7,8 @@ public class NewQuery {
 
     private boolean recommend;
 
+    public NewQuery(){}
+
     public String getTitle() {
         return title;
     }

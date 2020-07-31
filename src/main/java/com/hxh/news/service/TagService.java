@@ -22,4 +22,6 @@ public interface TagService {
     List<Tag> listTag();
 
     List<Tag> listTag(String ids);
+    //标签排行榜
+    List<Tag> listTagTop(Integer size);
 }

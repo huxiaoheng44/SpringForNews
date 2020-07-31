@@ -45,6 +45,9 @@ public class News {
     @ManyToMany(cascade = CascadeType.PERSIST)  //级联
     private List<Tag> tags = new ArrayList<>();
 
+    @OneToMany(mappedBy = "news")
+    private List<Comment> comments = new ArrayList<>();
+
     public News(){}
 
     public void init(){
@@ -68,29 +71,6 @@ public class News {
         }else {
             return tagIds;
         }
-    }
-
-    @Override
-    public String toString() {
-        return "News{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", firstPicture='" + firstPicture + '\'' +
-                ", flag='" + flag + '\'' +
-                ", views='" + views + '\'' +
-                ", appreciation=" + appreciation +
-                ", shareStatement=" + shareStatement +
-                ", commentabled=" + commentabled +
-                ", published=" + published +
-                ", recommend=" + recommend +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", type=" + type +
-                ", user=" + user +
-                ", tagIds='" + tagIds + '\'' +
-                ", description='" + description + '\'' +
-                '}';
     }
 
     public Long getId() {
@@ -235,5 +215,38 @@ public class News {
 
     public void setTags(List<Tag> tagList) {
         this.tags = tagList;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    @Override
+    public String toString() {
+        return "News{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", firstPicture='" + firstPicture + '\'' +
+                ", flag='" + flag + '\'' +
+                ", views='" + views + '\'' +
+                ", appreciation=" + appreciation +
+                ", shareStatement=" + shareStatement +
+                ", commentabled=" + commentabled +
+                ", published=" + published +
+                ", recommend=" + recommend +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", type=" + type +
+                ", user=" + user +
+                ", tagIds='" + tagIds + '\'' +
+                ", description='" + description + '\'' +
+                ", tags=" + tags +
+                ", comments=" + comments +
+                '}';
     }
 }

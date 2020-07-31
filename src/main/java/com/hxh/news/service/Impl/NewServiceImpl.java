@@ -3,18 +3,18 @@ package com.hxh.news.service.Impl;
 import com.hxh.news.dao.NewRepository;
 import com.hxh.news.po.News;
 import com.hxh.news.service.NewService;
+import com.hxh.news.utils.MarkdownUtils;
 import com.hxh.news.vo.NewQuery;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -85,5 +85,41 @@ public class NewServiceImpl implements NewService {
     @Override
     public Page<News> listNew(Pageable pageable) {
         return newRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<News> listRecommendNewsTop(Integer size) {
+        Sort sort = Sort.by(Sort.Direction.DESC,"updateTime");
+        Pageable pageable = PageRequest.of(0,size,sort);
+        return newRepository.findTop(pageable);
+    }
+
+    @Override
+    public Page<News> listNew(String query, Pageable pageable) {
+        return newRepository.findByQuery(query,pageable);
+    }
+
+    @Override
+    public News getAndConvert(Long id) {
+        News news = newRepository.findById(id).orElse(null);
+        if(news==null){
+            System.out.println("新闻不存在");
+        }
+        News news1 = new News();
+        BeanUtils.copyProperties(news,news1);
+        String content = news1.getContent();
+        news1.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
+        return news1;
+    }
+
+    @Override
+    public Page<News> listNew(Long tagId, Pageable pageable) {
+        return newRepository.findAll(new Specification<News>() {
+            @Override
+            public Predicate toPredicate(Root<News> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                Join join = root.join("tags");
+                return criteriaBuilder.equal(join.get("id"),tagId);
+            }
+        },pageable);
     }
 }

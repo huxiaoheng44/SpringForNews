@@ -5,6 +5,8 @@ import com.hxh.news.vo.NewQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 //NewService.java
 public interface NewService {
 
@@ -19,4 +21,13 @@ public interface NewService {
     void deleteNew(Long id);
     //主页显示列表
     Page<News> listNew(Pageable pageable);
+    //主页推荐新闻
+    List<News> listRecommendNewsTop(Integer size);
+    //全局搜索
+    Page<News> listNew(String query,Pageable pageable);
+    //显示新闻
+    News getAndConvert(Long id);
+    //标签页新闻
+    Page<News> listNew(Long tagId,Pageable pageable);
+
 }

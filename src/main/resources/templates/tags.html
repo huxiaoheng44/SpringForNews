@@ -49,12 +49,12 @@
 
       <div class="ui attached segment m-padded-tb-large">
         <a href="#" th:href="@{/tags/{id}(id=${tag.id})}"  class="ui basic left pointing large label m-margin-tb-tiny" th:classappend="${tag.id==activeTagId} ? 'teal'" th:each="tag : ${tags}">
-          <span th:text="${tag.name}">方法论</span> <div class="detail" th:text="${#arrays.length(tag.news)}">23</div>
+          <span th:text="${tag.name}">方法论</span> <div class="detail" th:text="${#arrays.length(tag.newsList)}">23</div>
         </a>
       </div>
 
       <div class="ui top attached teal segment">
-        <div class="ui padded vertical segment m-padded-tb-large" th:each="new : ${page.content}">
+        <div class="ui padded vertical segment m-padded-tb-large" th:each="news : ${page.content}">
           <div class="ui middle aligned mobile reversed stackable grid" >
             <div class="eleven wide column">
               <h3 class="ui header" ><a href="#" th:href="@{/news/{id}(id=${news.id})}" target="_blank" class="m-black" th:text="${news.title}">你真的理解什么是财富自由吗?</a></h3>

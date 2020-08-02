@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 //NewService.java
 public interface NewService {
@@ -29,5 +30,8 @@ public interface NewService {
     News getAndConvert(Long id);
     //标签页新闻
     Page<News> listNew(Long tagId,Pageable pageable);
+    //年份对应的新闻
+    Map<String,List<News>> archiveNews();
 
+    Long newCount();
 }

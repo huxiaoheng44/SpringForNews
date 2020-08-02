@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 
 //NewServiceImpl.java
@@ -121,5 +120,22 @@ public class NewServiceImpl implements NewService {
                 return criteriaBuilder.equal(join.get("id"),tagId);
             }
         },pageable);
+    }
+
+    @Override
+    public Map<String, List<News>> archiveNews() {
+        List<String> years = newRepository.findGroupYear();
+        //LinkedHashMap是有序集合，会按照添加的顺序保存
+        Map<String,List<News>> map = new LinkedHashMap<>();
+        for(String year:years){
+            map.put(year,newRepository.findByYear(year));
+        }
+        return map;
+
+    }
+
+    @Override
+    public Long newCount() {
+        return newRepository.count();
     }
 }

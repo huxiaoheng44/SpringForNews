@@ -11,18 +11,22 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
-public class ControllerExcetionHandler {
-    private  final Logger logger= LoggerFactory.getLogger(this.getClass());
+public class ControllerExceptionHandler {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
     @ExceptionHandler(Exception.class)
     public ModelAndView exceptionHandler(HttpServletRequest request,Exception e) throws Exception{
-        //logger.error("Request: URL: {},Exception: {}",ResponseStatus);
-        if(AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class)!=null){
+        logger.error("Request: URL: {},Exception: {}",request.getRequestURI(),e);
+        if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class)!=null){
             throw e;
         }
         ModelAndView mv = new ModelAndView();
-        mv.addObject("url",request.getRequestURL());
+        mv.addObject("url",request.getRequestURI());
         mv.addObject("exception",e);
         mv.setViewName("error/error");
         return mv;
     }
 }
+

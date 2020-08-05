@@ -4,6 +4,7 @@ import com.hxh.news.dao.NewRepository;
 import com.hxh.news.po.News;
 import com.hxh.news.service.NewService;
 import com.hxh.news.utils.MarkdownUtils;
+import com.hxh.news.utils.MyBeanUtils;
 import com.hxh.news.vo.NewQuery;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,8 @@ public class NewServiceImpl implements NewService {
         if(news1==null){
             System.out.println("未获取更新对象");
         }
-        BeanUtils.copyProperties(news,news1);
+        //BeanUtils.copyProperties(news,news1);
+        BeanUtils.copyProperties(news,news1, MyBeanUtils.getNullPropertyNames(news));
         news1.setUpdateTime(new Date());
         return newRepository.save(news1);
     }

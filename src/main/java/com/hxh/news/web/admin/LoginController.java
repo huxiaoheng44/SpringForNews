@@ -2,6 +2,10 @@ package com.hxh.news.web.admin;
 
 import com.hxh.news.po.User;
 import com.hxh.news.service.UserService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +30,25 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password,
                         HttpSession session, RedirectAttributes attributes){
-        User user = userService.checkUsers(username,password);
-        if(user!=null){
-            user.setPassword(null);
+//        User user = userService.checkUsers(username,password);
+//        if(user!=null){
+//            user.setPassword(null);
+//            session.setAttribute("user",user);
+//            return "admin/index";
+//        }else {
+//            attributes.addFlashAttribute("message","用户名或密码错误");
+//            return "redirect:/admin";
+//        }
+        try{
+            //构造登录令牌
+            UsernamePasswordToken upToken = new UsernamePasswordToken(username,password);
+            //获取subject
+            Subject subject = SecurityUtils.getSubject();
+            subject.login(upToken);
+            User user = (User) subject.getPrincipal();
             session.setAttribute("user",user);
             return "admin/index";
-        }else {
+        }catch (Exception e){
             attributes.addFlashAttribute("message","用户名或密码错误");
             return "redirect:/admin";
         }

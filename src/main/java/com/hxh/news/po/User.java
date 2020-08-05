@@ -1,9 +1,7 @@
 package com.hxh.news.po;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "t_user")
@@ -22,6 +20,17 @@ public class User {
     private Date updateTime;
     @OneToMany(mappedBy = "user")
     private List<News> newsList = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles = new HashSet<>(0);
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public String toString() {
